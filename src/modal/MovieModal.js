@@ -25,6 +25,7 @@ const MovieSchema = new Schema({
   },
 
   artists: [ArtistSchema],
+  keywords: [{ type: String }],
 });
 
 const movie = mongoose.model("movie", MovieSchema);
