@@ -13,7 +13,16 @@ router.get("/", (req, res) => {
 
 //Post Movies
 router.post("/", async (req, res) => {
-  const { title, genre, released, artists, rating, image, about } = req.body;
+  const {
+    title,
+    genre,
+    released,
+    artists,
+    rating,
+    image,
+    about,
+    keywords,
+  } = req.body;
   try {
     const newMovie = new movie({
       title,
@@ -23,6 +32,7 @@ router.post("/", async (req, res) => {
       artists,
       about,
       rating,
+      keywords,
     });
     const movie1 = await newMovie.save();
 
