@@ -4,6 +4,7 @@ import connectDB from "./db";
 import cors from "cors";
 
 import MovieRoutes from "./routes/MovieRoutes";
+// import CastRoutes from "./routes/CastRoutes";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(express.Router());
 
 app.use("/api/movies", MovieRoutes);
+// app.use("/api/movies/cast", CastRoutes);
 
 const PORT = process.env.PORT || 5000;
 
