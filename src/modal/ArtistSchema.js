@@ -7,7 +7,7 @@ export const ArtistSchema = new Schema({
     type: String,
   },
   dob: {
-    type: Date,
+    type: String,
   },
   role: {
     type: String,
