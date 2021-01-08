@@ -4,11 +4,25 @@ import movie from "../modal/MovieModal";
 const router = express.Router();
 
 //Get Movies
-router.get("/", (req, res) => {
-  movie
-    .find()
-    .then((data) => res.json(data))
-    .catch((err) => res.status(400).json(`Error ${err}`));
+router.get("/", async (req, res) => {
+  const page = parseInt(req.query.page || "0");
+  const limit = parseInt(req.query.limit);
+  const total = await movie.countDocuments({});
+
+  try {
+    const movies = await movie
+      .find()
+      .limit(limit)
+      .skip(limit * page);
+
+    res.json({
+      // totalPages: Math.ceil(total / limit),
+      movies,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error..!");
+  }
 });
 
 //Post Movies
