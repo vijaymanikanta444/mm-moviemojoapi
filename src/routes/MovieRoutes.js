@@ -5,18 +5,25 @@ const router = express.Router();
 
 //Get Movies
 router.get("/", async (req, res) => {
-  const page = parseInt(req.query.page || "0");
-  const limit = parseInt(req.query.limit);
-  const total = await movie.countDocuments({});
+  const skip = Number(req.query.skip || "0");
+  const limit = Number(req.query.limit || "16");
+  const total = await movie.countDocuments();
+  const hasMore = total - (limit + skip) > 0;
 
   try {
     const movies = await movie
       .find()
       .limit(limit)
-      .skip(limit * page);
+      .skip(limit * skip);
 
     res.json({
-      // totalPages: Math.ceil(total / limit),
+      pagination: {
+        total,
+        hasMore,
+
+        skip,
+        limit,
+      },
       movies,
     });
   } catch (err) {
