@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
   const skip = Number(req.query.skip || "0");
   const limit = Number(req.query.limit || "16");
   const total = await movie.countDocuments();
-  const hasMore = total - (limit + skip) > 0;
 
   try {
     const movies = await movie
@@ -17,13 +16,11 @@ router.get("/", async (req, res) => {
       .skip(limit * skip);
 
     res.json({
-      pagination: {
-        total,
-        hasMore,
+      total,
 
-        skip,
-        limit,
-      },
+      skip,
+      limit,
+
       movies,
     });
   } catch (err) {
@@ -108,6 +105,14 @@ router.delete("/:id", (req, res) => {
     .findByIdAndDelete(req.params.id)
     .then(() => res.json("User was deleted..."))
     .catch((err) => res.status(400).json("Error:" + err));
+});
+
+//search movie with an title
+router.get("/search/movie/:title", (req, res) => {
+  let regex = new RegExp(req.params.title, "i");
+  movie.find({ title: regex }).then((result) => {
+    res.status(200).json(result);
+  });
 });
 
 export default router;
